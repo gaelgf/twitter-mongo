@@ -10,12 +10,20 @@ var mongoose = require('mongoose'),
  * Article Schema
  */
 var TweetSchema = new Schema({
-  title: {
+  created_at:{
     type: String,
     default: '',
     trim: true
   },
-  text: {
+  id_str: {
+    type: String,
+    default: '',
+    trim: true
+  },
+  entities: {
+    hashtags: [{text:{ type: String, default: '', trim: true}}]
+    },
+  lang: {
     type: String,
     default: '',
     trim: true
