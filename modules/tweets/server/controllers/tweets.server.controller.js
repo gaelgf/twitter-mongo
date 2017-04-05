@@ -10,7 +10,7 @@ var path = require('path'),
 
 
 /**
- * List of Articles
+ * List des tweets
  */
   exports.list = function (req, res) {
 
@@ -25,7 +25,9 @@ var path = require('path'),
     });
   };
 
-
+/**
+ * Moyenne des retweets pour tous les tweets
+ */
 exports.Retweet = function (req, res) {
 
   Tweet.find({}).select('retweet_count').exec(function (err, tweet) {
@@ -57,7 +59,9 @@ exports.Retweet = function (req, res) {
   });
 };
 
-
+/**
+ * Liste des tweets entre 2 dates
+ */
   exports.listByDate = function (req, res) {
 
     console.log(req.params.start);
@@ -70,48 +74,114 @@ exports.Retweet = function (req, res) {
           message: errorHandler.getErrorMessage(err)
         });
       } else {
-        res.json(tweet);
+
+
+        var Infos = {};
+
+        Infos.start = start;
+        Infos.end = end;
+        Infos.nb = tweet.length;
+
+        var data = {};
+        data.infos = Infos;
+        data.tweet = tweet;
+
+
+        res.json(data);
       }
     });
   };
 
 
-
+/**
+ * Liste des tweets et nombres de tweets pour un hashtag
+ */
   exports.listByHashtags = function (req, res) {
-
     var hashtags = req.params.hashtags;
-    console.log(hashtags);
-
-   // Tweet.find({ entities: { $text: { $search: hashtags}}}).exec(function (err, tweet) {
-   // Tweet.find({entities: { hashtags: [{ text: hashtags }]}})
     Tweet.find({'entities.hashtags.text': hashtags})
-
       .exec(function (err, tweet) {
       if (err) {
         return res.status(422).send({
           message: errorHandler.getErrorMessage(err)
         });
       } else {
-        res.json(tweet);
-        console.log(tweet);
+
+        var Infos = {};
+
+        Infos.hastags = hashtags;
+        Infos.Nb = tweet.length;
+
+        var data = {};
+        data.infos = Infos;
+        data.tweet = tweet;
+
+        res.json(data);
       }
     });
   };
 
+
+/**
+ * Nombres de tweets par langue
+ */
+exports.listAllLanguage = function (req, res) {
+
+  console.log(req);
+  var lang = req.params.lang;
+
+  var countEn;
+  var countFr;
+  var countEs;
+
+  Tweet.find({lang: "en"}).exec(function (err, tweetEn) {
+    countEn = tweetEn.length;
+    console.log(countEn);
+
+    Tweet.find({lang: "fr"}).exec(function (err, tweetFr) {
+      countFr = tweetFr.length;
+
+      Tweet.find({lang: "es"}).exec(function (err, tweetEs) {
+        countEs = tweetEs.length;
+
+
+        var data = [{
+          name: 'English',
+          y: countEn,
+          drilldown: 'English'},
+          {
+            name: 'French',
+            y: countFr,
+            drilldown: 'French'},
+          {
+            name: 'Spanish',
+            y: countEs,
+            drilldown: 'Spanish'}
+        ];
+
+        res.json(data);
+      });
+    });
+  });
+};
+
+
+/**
+ * Liste des tweets pour une langue
+ */
 exports.listByLanguage = function (req, res) {
 
   console.log(req);
   var lang = req.params.lang;
 
   Tweet.find({lang: lang}).exec(function (err, tweet) {
-      if (err) {
-        return res.status(422).send({
-          message: errorHandler.getErrorMessage(err)
-        });
-      } else {
-        res.json(tweet);
-      }
-    });
+    if (err) {
+      return res.status(422).send({
+        message: errorHandler.getErrorMessage(err)
+      });
+    } else {
+      res.json(tweet);
+    }
+  });
 };
 
     exports.create = function (req, res) {
