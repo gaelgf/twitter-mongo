@@ -32,6 +32,11 @@ var TweetSchema = new Schema({
     type: String,
     default: '',
     trim: true
+  },
+  retweet_count: {
+    type: Number,
+    default: '',
+    trim: true
   }
 });
 
