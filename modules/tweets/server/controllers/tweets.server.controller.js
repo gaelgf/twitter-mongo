@@ -74,7 +74,20 @@ exports.Retweet = function (req, res) {
           message: errorHandler.getErrorMessage(err)
         });
       } else {
-        res.json(tweet);
+
+
+        var Infos = {};
+
+        Infos.start = start;
+        Infos.end = end;
+        Infos.nb = tweet.length;
+
+        var data = {};
+        data.infos = Infos;
+        data.tweet = tweet;
+
+
+        res.json(data);
       }
     });
   };
