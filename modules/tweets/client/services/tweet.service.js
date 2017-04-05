@@ -10,7 +10,8 @@
   function TweetsService($http, $log) {
      return {
        getRetweets: getRetweets,
-       getTweetsByLangage: getTweetsByLangage
+       getTweetsByLangage: getTweetsByLangage,
+       getTweetsByDate: getTweetsByDate
      };
 
      function getRetweets() {
@@ -19,6 +20,10 @@
 
     function getTweetsByLangage() {
       return $http.get('/api/tweets/ByLanguage');
+    }
+
+    function getTweetsByDate(start, end) {
+      return $http.get('/api/tweets/ByDate/'+encodeURI(start)+ '/' +encodeURI(end));
     }
 
     function handleError(error) {
