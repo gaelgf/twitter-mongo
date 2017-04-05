@@ -18,6 +18,10 @@ module.exports = function (app) {
 
   app.route('/api/tweets/ByLanguage/:lang')
     .get(tweets.listByLanguage);
+
+  app.route('/api/tweets/ByLanguage')
+    .get(tweets.listAllLanguage);
+
   app.route('/api/tweets/Retweet')
     .get(tweets.Retweet);
 

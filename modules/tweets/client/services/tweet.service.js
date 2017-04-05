@@ -5,16 +5,21 @@
     .module('tweets')
     .factory('TweetsService', TweetsService);
 
-  TweetsService.$inject = ['$resource', '$log'];
+  TweetsService.$inject = ['$http', '$log'];
 
   function TweetsService($http, $log) {
      return {
-       getRetweets: getRetweets
+       getRetweets: getRetweets,
+       getTweetsByLangage: getTweetsByLangage
      };
 
      function getRetweets() {
-       $http()
+       return $http.get('/api/tweets/Retweet');
      }
+
+    function getTweetsByLangage() {
+      return $http.get('/api/tweets/ByLanguage');
+    }
 
     function handleError(error) {
       // Log error
