@@ -11,7 +11,12 @@
      return {
        getRetweets: getRetweets,
        getTweetsByLangage: getTweetsByLangage,
-       getTweetsByDate: getTweetsByDate
+       getTweetsByDate: getTweetsByDate,
+       getTweetsByText: getTweetsByText,
+       listSeriesByFrTweets: listSeriesByFrTweets,
+       listVikingsByCharacter: listVikingsByCharacter,
+       listGOTByCharacter: listGOTByCharacter,
+       listWalkingDeadByCharacter: listWalkingDeadByCharacter
      };
 
      function getRetweets() {
@@ -29,6 +34,22 @@
     function getTweetsByText(text) {
       return $http.get('/api/tweets/ByText/'+text);
     }
+
+    function listSeriesByFrTweets() {
+      return $http.get('/api/tweets/listSeriesByFrTweets');
+    }
+
+    function listVikingsByCharacter() {
+      return $http.get('/api/tweets/listVikingsByCharacter');
+    }
+    function listGOTByCharacter() {
+      return $http.get('/api/tweets/listGOTByCharacter');
+    }
+    function listWalkingDeadByCharacter() {
+      return $http.get('/api/tweets/listWalkingDeadByCharacter');
+    }
+
+
 
     function handleError(error) {
       // Log error

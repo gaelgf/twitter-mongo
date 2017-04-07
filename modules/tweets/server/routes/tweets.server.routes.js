@@ -28,6 +28,16 @@ module.exports = function (app) {
     app.route('/api/tweets/ByText/:text')
       .get(tweets.listByText);
 
+  app.route('/api/tweets/listSeriesByFrTweets')
+    .get(tweets.listSeriesByFrTweets);
+
+  app.route('/api/tweets/listVikingsByCharacter')
+    .get(tweets.listVikingsByCharacter);
+  app.route('/api/tweets/listGOTByCharacter')
+    .get(tweets.listGOTByCharacter);
+  app.route('/api/tweets/listWalkingDeadByCharacter')
+      .get(tweets.listWalkingDeadByCharacter);
+
   app.param('start', tweets.listByDate);
   app.param('end', tweets.listByDate);
   app.param('hashtags', tweets.listByHashtags);

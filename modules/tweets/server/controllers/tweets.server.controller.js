@@ -217,6 +217,156 @@ exports.listAllLanguage = function (req, res) {
 
 };
 
+exports.listSeriesByFrTweets = function (req, res) {
+
+  var lang = req.params.lang;
+
+  var countwalkingdead;
+  var countVikings;
+  var countGOT;
+
+  Tweet.find({lang: "fr", "text" : {$regex : ".*" + 'walkingdead' + ".*"}}).exec(function (err, tweetEn) {
+    countwalkingdead = tweetEn.length;
+
+    Tweet.find({lang: "fr", "text" : {$regex : ".*" + 'Vikings' + ".*"}}).exec(function (err, tweetFr) {
+      countVikings = tweetFr.length;
+
+      Tweet.find({lang: "fr", "text" : {$regex : ".*" + 'GOT' + ".*"}}).exec(function (err, tweetEs) {
+        countGOT = tweetEs.length;
+
+
+        var data = [{
+          name: 'walkingdead',
+          y: countwalkingdead,
+          drilldown: 'walkingdead'},
+          {
+            name: 'Vikings',
+            y: countVikings,
+            drilldown: 'Vikings'},
+          {
+            name: 'GOT',
+            y: countGOT,
+            drilldown: 'GOT'}
+        ];
+
+        res.json(data);
+      });
+    });
+  });
+
+};
+
+exports.listVikingsByCharacter = function (req, res) {
+
+  var countwalkingdead;
+  var countVikings;
+  var countGOT;
+
+  Tweet.find({"text" : {$regex : ".*" + 'Ragnar.*Vikings' + ".*"}}).exec(function (err, tweetEn) {
+    countwalkingdead = tweetEn.length;
+
+    Tweet.find({"text" : {$regex : ".*" + 'Lagertha.*Vikings' + ".*"}}).exec(function (err, tweetFr) {
+      countVikings = tweetFr.length;
+
+      Tweet.find({"text" : {$regex : ".*" + 'Floki.*Vikings' + ".*"}}).exec(function (err, tweetEs) {
+        countGOT = tweetEs.length;
+
+
+        var data = [{
+          name: 'Ragnar',
+          y: countwalkingdead,
+          drilldown: 'Ragnar'},
+          {
+            name: 'Lagertha',
+            y: countVikings,
+            drilldown: 'Lagertha'},
+          {
+            name: 'Floki',
+            y: countGOT,
+            drilldown: 'Floki'}
+        ];
+
+        res.json(data);
+      });
+    });
+  });
+
+};
+
+exports.listGOTByCharacter = function (req, res) {
+
+  var countwalkingdead;
+  var countVikings;
+  var countGOT;
+
+  Tweet.find({"text" : {$regex : ".*" + 'Jon Snow.*GOT' + ".*"}}).exec(function (err, tweetEn) {
+    countwalkingdead = tweetEn.length;
+
+    Tweet.find({"text" : {$regex : ".*" + 'Daenerys Targaryen.*GOT' + ".*"}}).exec(function (err, tweetFr) {
+      countVikings = tweetFr.length;
+
+      Tweet.find({"text" : {$regex : ".*" + 'Arya Stark.*GOT' + ".*"}}).exec(function (err, tweetEs) {
+        countGOT = tweetEs.length;
+
+
+        var data = [{
+          name: 'Jon Snow',
+          y: countwalkingdead,
+          drilldown: 'Jon Snow'},
+          {
+            name: 'Daenerys Targaryen',
+            y: countVikings,
+            drilldown: 'Daenerys Targaryen'},
+          {
+            name: 'Arya Stark',
+            y: countGOT,
+            drilldown: 'Arya Stark'}
+        ];
+
+        res.json(data);
+      });
+    });
+  });
+
+};
+
+exports.listWalkingDeadByCharacter = function (req, res) {
+
+  var countwalkingdead;
+  var countVikings;
+  var countGOT;
+
+  Tweet.find({"text" : {$regex : ".*" + 'Rick.*TWD' + ".*"}}).exec(function (err, tweetEn) {
+    countwalkingdead = tweetEn.length;
+
+    Tweet.find({"text" : {$regex : ".*" + 'Daryl Dixon.*TWD' + ".*"}}).exec(function (err, tweetFr) {
+      countVikings = tweetFr.length;
+
+      Tweet.find({"text" : {$regex : ".*" + 'Carl.*TWD' + ".*"}}).exec(function (err, tweetEs) {
+        countGOT = tweetEs.length;
+
+
+        var data = [{
+          name: 'Rick',
+          y: countwalkingdead,
+          drilldown: 'Rick'},
+          {
+            name: 'Daryl Dixon',
+            y: countVikings,
+            drilldown: 'Daryl Dixon'},
+          {
+            name: 'Carl',
+            y: countGOT,
+            drilldown: 'Carl'}
+        ];
+
+        res.json(data);
+      });
+    });
+  });
+
+};
+
 
 /**
  * Liste des tweets pour une langue
