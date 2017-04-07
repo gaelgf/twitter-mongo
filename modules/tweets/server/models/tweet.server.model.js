@@ -5,6 +5,7 @@
  */
 var mongoose = require('mongoose'),
   Schema = mongoose.Schema;
+var explain = require('mongoose-explain');
 
 /**
  * Article Schema
@@ -39,5 +40,7 @@ var TweetSchema = new Schema({
     trim: true
   }
 });
+
+TweetSchema.plugin(explain);
 
 mongoose.model('Tweet', TweetSchema);
