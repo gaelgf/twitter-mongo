@@ -26,6 +26,10 @@
       return $http.get('/api/tweets/ByDate/'+encodeURI(start)+ '/' +encodeURI(end));
     }
 
+    function getTweetsByText(text) {
+      return $http.get('/api/tweets/ByText/'+text);
+    }
+
     function handleError(error) {
       // Log error
       $log.error(error);

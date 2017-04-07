@@ -25,6 +25,9 @@ module.exports = function (app) {
   app.route('/api/tweets/Retweet')
     .get(tweets.Retweet);
 
+    app.route('/api/tweets/ByText/:text')
+      .get(tweets.listByText);
+
   app.param('start', tweets.listByDate);
   app.param('end', tweets.listByDate);
   app.param('hashtags', tweets.listByHashtags);

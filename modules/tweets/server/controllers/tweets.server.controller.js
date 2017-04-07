@@ -31,7 +31,6 @@ var path = require('path'),
 exports.Retweet = function (req, res) {
 
   Tweet.find({}).select('retweet_count').exec(function (err, tweet) {
-    console.log(tweet.length);
 
     var count = 0;
     var countAverage = {};
@@ -39,7 +38,6 @@ exports.Retweet = function (req, res) {
     for(var i = 0; i < tweet.length;i++){
       if(tweet[i].retweet_count != null) {
         count = count + tweet[i].retweet_count;
-        console.log(count);
       }
     }
 
@@ -63,8 +61,6 @@ exports.Retweet = function (req, res) {
  * Liste des tweets entre 2 dates
  */
   exports.listByDate = function (req, res) {
-
-    console.log(req.params.start);
     var start = req.params.start;
     var end = req.params.end;
 
@@ -120,13 +116,39 @@ exports.Retweet = function (req, res) {
     });
   };
 
+  /**
+   * Liste des tweets contenant du texte
+   */
+    exports.listByText = function (req, res) {
+      var text = req.params.text;
+      Tweet.find({"text" : {$regex : ".*" + text + ".*"}})
+        .exec(function (err, tweet) {
+        if (err) {
+          return res.status(422).send({
+            message: errorHandler.getErrorMessage(err)
+          });
+        } else {
+
+          var Infos = {};
+
+          Infos.text = text;
+          Infos.Nb = tweet.length;
+
+          var data = {};
+          data.infos = Infos;
+          data.tweet = tweet;
+
+          res.json(data);
+        }
+      });
+    };
+
 
 /**
  * Nombres de tweets par langue
  */
 exports.listAllLanguage = function (req, res) {
 
-  console.log(req);
   var lang = req.params.lang;
 
   var countEn;
@@ -135,7 +157,6 @@ exports.listAllLanguage = function (req, res) {
 
   Tweet.find({lang: "en"}).exec(function (err, tweetEn) {
     countEn = tweetEn.length;
-    console.log(countEn);
 
     Tweet.find({lang: "fr"}).exec(function (err, tweetFr) {
       countFr = tweetFr.length;
@@ -170,7 +191,6 @@ exports.listAllLanguage = function (req, res) {
  */
 exports.listByLanguage = function (req, res) {
 
-  console.log(req);
   var lang = req.params.lang;
 
   Tweet.find({lang: lang}).exec(function (err, tweet) {
