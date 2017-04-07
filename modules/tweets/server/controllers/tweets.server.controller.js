@@ -155,34 +155,66 @@ exports.listAllLanguage = function (req, res) {
   var countFr;
   var countEs;
 
-  Tweet.find({lang: "en"}).exec(function (err, tweetEn) {
-    countEn = tweetEn.length;
+  if(req.query && req.query.serie !== undefined) {
+    Tweet.find({lang: "en", "text" : {$regex : ".*" + req.query.serie + ".*"}}).exec(function (err, tweetEn) {
+      countEn = tweetEn.length;
 
-    Tweet.find({lang: "fr"}).exec(function (err, tweetFr) {
-      countFr = tweetFr.length;
+      Tweet.find({lang: "fr", "text" : {$regex : ".*" + req.query.serie + ".*"}}).exec(function (err, tweetFr) {
+        countFr = tweetFr.length;
 
-      Tweet.find({lang: "es"}).exec(function (err, tweetEs) {
-        countEs = tweetEs.length;
+        Tweet.find({lang: "es", "text" : {$regex : ".*" + req.query.serie + ".*"}}).exec(function (err, tweetEs) {
+          countEs = tweetEs.length;
 
 
-        var data = [{
-          name: 'English',
-          y: countEn,
-          drilldown: 'English'},
-          {
-            name: 'French',
-            y: countFr,
-            drilldown: 'French'},
-          {
-            name: 'Spanish',
-            y: countEs,
-            drilldown: 'Spanish'}
-        ];
+          var data = [{
+            name: 'English',
+            y: countEn,
+            drilldown: 'English'},
+            {
+              name: 'French',
+              y: countFr,
+              drilldown: 'French'},
+            {
+              name: 'Spanish',
+              y: countEs,
+              drilldown: 'Spanish'}
+          ];
 
-        res.json(data);
+          res.json(data);
+        });
       });
     });
-  });
+  } else {
+    Tweet.find({lang: "en"}).exec(function (err, tweetEn) {
+      countEn = tweetEn.length;
+
+      Tweet.find({lang: "fr"}).exec(function (err, tweetFr) {
+        countFr = tweetFr.length;
+
+        Tweet.find({lang: "es"}).exec(function (err, tweetEs) {
+          countEs = tweetEs.length;
+
+
+          var data = [{
+            name: 'English',
+            y: countEn,
+            drilldown: 'English'},
+            {
+              name: 'French',
+              y: countFr,
+              drilldown: 'French'},
+            {
+              name: 'Spanish',
+              y: countEs,
+              drilldown: 'Spanish'}
+          ];
+
+          res.json(data);
+        });
+      });
+    });
+  }
+
 };
 
 
@@ -192,6 +224,17 @@ exports.listAllLanguage = function (req, res) {
 exports.listByLanguage = function (req, res) {
 
   var lang = req.params.lang;
+  if(req.query && req.query.serie !== undefined) {
+    Tweet.find({lang: lang, "text" : {$regex : ".*" + req.query.serie + ".*"}}).exec(function (err, tweet) {
+      if (err) {
+        return res.status(422).send({
+          message: errorHandler.getErrorMessage(err)
+        });
+      } else {
+        res.json(tweet);
+      }
+    });
+  }
 
   Tweet.find({lang: lang}).exec(function (err, tweet) {
     if (err) {
@@ -202,6 +245,7 @@ exports.listByLanguage = function (req, res) {
       res.json(tweet);
     }
   });
+
 };
 
     exports.create = function (req, res) {

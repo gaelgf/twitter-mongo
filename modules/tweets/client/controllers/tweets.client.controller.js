@@ -42,19 +42,17 @@
 
 
 
-      TweetsService.getTweetsByLangage()
-        .then(saveTweetsByLangage);
+      TweetsService.getTweetsByLangage('got')
+        .then(saveGotTweetsByLangage);
 
-      function saveTweetsByLangage(res) {
-        vm.AllLangage = res.data;
+      function saveGotTweetsByLangage(res) {
 
-
-        Highcharts.chart('LanguageCharts', {
+        Highcharts.chart('GotLanguageCharts', {
           chart: {
             type: 'column'
           },
           title: {
-            text: 'Number tweets by Language'
+            text: 'Number tweets on Game of Thrones by Language'
           },
           subtitle: {
             text: ''
@@ -89,11 +87,115 @@
           series: [{
             name: 'Brands',
             colorByPoint: true,
-            data: vm.AllLangage
+            data: res.data
           }]
         });
 
       }
+
+      TweetsService.getTweetsByLangage('Vikings')
+        .then(saveVinkingsTweetsByLangage);
+
+      function saveVinkingsTweetsByLangage(res) {
+
+        Highcharts.chart('VinkingsLanguageCharts', {
+          chart: {
+            type: 'column'
+          },
+          title: {
+            text: 'Number tweets on Vinkings by Language'
+          },
+          subtitle: {
+            text: ''
+          },
+          xAxis: {
+            type: 'category'
+          },
+          yAxis: {
+            title: {
+              text: 'Number'
+            }
+
+          },
+          legend: {
+            enabled: false
+          },
+          plotOptions: {
+            series: {
+              borderWidth: 0,
+              dataLabels: {
+                enabled: true,
+                format: '{point.y:.1f}'
+              }
+            }
+          },
+
+          tooltip: {
+            headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+            pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}</b> of total<br/>'
+          },
+
+          series: [{
+            name: 'Brands',
+            colorByPoint: true,
+            data: res.data
+          }]
+        });
+
+      }
+
+      TweetsService.getTweetsByLangage('walkingdead')
+        .then(saveWalkingDeadTweetsByLangage);
+
+      function saveWalkingDeadTweetsByLangage(res) {
+
+        Highcharts.chart('walkingdeadLanguageCharts', {
+          chart: {
+            type: 'column'
+          },
+          title: {
+            text: 'Number tweets on Walking dead by Language'
+          },
+          subtitle: {
+            text: ''
+          },
+          xAxis: {
+            type: 'category'
+          },
+          yAxis: {
+            title: {
+              text: 'Number'
+            }
+
+          },
+          legend: {
+            enabled: false
+          },
+          plotOptions: {
+            series: {
+              borderWidth: 0,
+              dataLabels: {
+                enabled: true,
+                format: '{point.y:.1f}'
+              }
+            }
+          },
+
+          tooltip: {
+            headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+            pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}</b> of total<br/>'
+          },
+
+          series: [{
+            name: 'Brands',
+            colorByPoint: true,
+            data: res.data
+          }]
+        });
+
+      }
+
+
 
     });
 }());

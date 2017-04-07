@@ -18,8 +18,8 @@
        return $http.get('/api/tweets/Retweet');
      }
 
-    function getTweetsByLangage() {
-      return $http.get('/api/tweets/ByLanguage');
+    function getTweetsByLangage(serie) {
+      return $http.get('/api/tweets/ByLanguage?serie=' + serie);
     }
 
     function getTweetsByDate(start, end) {
